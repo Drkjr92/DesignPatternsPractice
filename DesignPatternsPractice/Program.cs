@@ -25,7 +25,7 @@ namespace DesignPatternsPractice
         }
     }
 
-    //Build out the Iterator 
+    //Build out the Iterator from scratch
     public class InOrderIterator<T>
     {
         //important elements: root, Current, MoveNext()
@@ -76,6 +76,48 @@ namespace DesignPatternsPractice
         }
     }
 
+    //Build out the binary tree utlizing C#'s IEnumerables
+    public class BinaryTree<T>
+    {
+        private Node<T> root;
+
+        public BinaryTree(Node<T> root)
+        {
+            this.root = root;
+        }
+
+        public IEnumerable<Node<T>> InOrder
+        {
+            get
+            {
+                IEnumerable<Node<T>> Traverse(Node<T> current)
+                {
+                    //go to the left most element and yield return that element
+                    if(current.Left != null)
+                    {
+                        foreach(var leftNode in Traverse(current.Left))
+                        {
+                            yield return leftNode;
+                        }
+                    }
+                    yield return current;
+
+                    if(current.Right != null)
+                    {
+                        foreach(var rightNode in Traverse(current.Right))
+                        {
+                            yield return rightNode;
+                        }
+                    }
+                }
+
+                foreach(var node in Traverse(root))
+                {
+                    yield return node;
+                }    
+            }
+        } 
+    }
 
     internal class Program
     {
@@ -93,6 +135,9 @@ namespace DesignPatternsPractice
             {
                 Console.Write(iterator.Current.Value + ", "); //hmm that last comma kind of ugly.
             }
+
+            var tree = new BinaryTree<int>(root);
+            Console.WriteLine(String.Join(",", tree.InOrder.Select(x => x.Value))); //much cleaner
         }
     }
 }
