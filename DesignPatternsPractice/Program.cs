@@ -3,6 +3,7 @@
 namespace DesignPatternsPractice 
 {
 
+    #region Iterators
     //Build out the binary tree
     public class Node<T>
     {
@@ -118,6 +119,88 @@ namespace DesignPatternsPractice
             }
         } 
     }
+
+    #endregion
+
+    #region Interface Segregation Principle
+
+    public class Document
+    {
+
+    }
+    public interface IMachine
+    {
+        void Print(Document document);
+        void Scan(Document document);
+        void Fax(Document document);
+    }
+    public interface IPrinter
+    {
+        void Print(Document document);
+    }
+    public interface IScanner
+    {
+        void Scan(Document document);
+    }
+    public interface IMultiFunctionDevice: IScanner, IPrinter //..
+    {
+
+    }
+    
+    public class MultiFunctionalPrinter : IMachine
+    {
+        public void Fax(Document document)
+        {
+            
+        }
+
+        public void Print(Document document)
+        {
+            
+        }
+
+        public void Scan(Document document)
+        {
+            
+        }
+    }
+    public class Photocopier : IPrinter, IScanner
+    {
+        public void Print(Document document)
+        {
+            
+        }
+
+        public void Scan(Document document)
+        {
+            
+        }
+    }
+    public class MultiFunctionMachine : IMultiFunctionDevice
+    {
+        private IPrinter printer;
+        private IScanner scanner;
+
+        public MultiFunctionMachine(IPrinter printer, IScanner scanner)
+        {
+            this.printer = printer;
+            this.scanner = scanner;
+        }
+
+        //Decorator pattern
+        public void Print(Document document)
+        {
+            printer.Print(document);
+        }
+
+        public void Scan(Document document)
+        {
+            scanner.Scan(document);
+        }
+
+    }
+
+    #endregion
 
     internal class Program
     {
